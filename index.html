@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+	</head>
+	<style type="text/css">
+		
+		canvas{
+			border: 1px solid black;
+			
+		}
+	</style>
+	<body>
+		<canvas id="canvas" width="600" height="400"></canvas>
+	</body>
+	<script type="text/javascript">
+		var canvas=document.querySelector("#canvas");
+		var ctx=canvas.getContext("2d");
+		var img=new Image();
+		var canvasWidth=ctx.canvas.width;
+		var canvasHeight=ctx.canvas.height;
+		var index=0;
+		var timer=null;
+		var tiemr2=null;
+		var eventPeopleWidth=0;
+		var eventPeopleHeight=0;
+		var direction=0;
+		
+		var imgWidth=0;
+		var imgHeigh=0;
+		
+		var peoplePostionX=0;
+		var peoplePostionY=0;
+		
+		img.onload=function(){
+			imgWidth=img.width;
+			imgHeight=img.height;
+			eventPeopleWidth=imgWidth/4;
+			eventPeopleHeight=imgHeight/4;
+			peoplePostionX=canvasWidth / 2 - eventPeopleWidth/2;
+			peoplePostionY=canvasHeight / 2 - eventPeopleHeight/2;
+			peopleWalk();
+		}
+		img.src="img/NPCrabbitbaby.png";
+		var count=0;
+		document.onkeydown=function(e){
+			clearTimeout(timer2);
+			count++;
+			console.log(count);
+			if(count<=2){
+				console.log("niu");
+				peopleWalk();
+			}
+			if(e.keyCode==38){ //上
+				peoplePostionY=peoplePostionY-2;
+				direction=eventPeopleHeight*3;
+			}else if(e.keyCode==39){ //右
+				peoplePostionX=peoplePostionX+2;
+				direction=eventPeopleHeight*2;
+			}else if(e.keyCode==40){ //下
+				peoplePostionY=peoplePostionY+2;
+				direction=eventPeopleHeight*0;
+			}else if(e.keyCode==37){ //左
+				peoplePostionX=peoplePostionX-2;
+				direction=eventPeopleHeight*1;
+			}
+		}
+		document.onkeyup=function(){
+			timer2=setTimeout(function(){
+				clearInterval(timer);
+				count=1;
+			},500);
+			
+			
+		}
+		function peopleWalk(){
+			clearInterval(timer);
+			timer=setInterval(function(){
+				index++;
+				if(index>3){
+					index=0;
+				}
+				ctx.clearRect(0,0,canvasWidth,canvasWidth);
+				ctx.drawImage(img,index*eventPeopleWidth,direction,eventPeopleWidth,eventPeopleHeight,peoplePostionX,peoplePostionY,eventPeopleWidth,eventPeopleHeight);
+			},100);
+		}
+	</script>
+</html>
